@@ -18,26 +18,34 @@
 </body>
 <script>
     var terminateFlag = false,
+      targetNum = 10000000000,
+      sum = 0,
       timer;
 
     function setTimeoutCalc() {
-        timer = setTimeout(calc, 2000);
+        timer = setTimeout(calc, 2000, 1, 10000);
     }
 
     function calc() {
-        console.error("calc start!");
-        var i = 0,
-          sum = 0;
+        var startNumber = arguments[0],
+          unit = arguments[1],
+          j = startNumber,
+          max = startNumber + unit;
 
-        while (i < 10000000000) {
-            if (terminateFlag) {
-                console.error("calc force shutdown! i : ", i);
+        console.error("calc start!");
+        console.error("arguments : ", arguments);
+
+        for (j; j < max; j++) {
+            if (terminateFlag || j > targetNum) {
+                console.error("calc force shutdown! j : ", j);
+                clearTimeout(timer);
                 return;
             }
-
-            sum += i;
-            i++;
+            sum += j;
         }
+
+        timer = setTimeout(calc, 2000, j, 10000);
+
         console.error("----------------- sum : ", sum);
         console.error("calc end!");
     }
@@ -45,7 +53,6 @@
     function forceQuit() {
         console.error("set terminateFlag true!");
         terminateFlag = true;
-
     }
 
     function clearTimer() {
@@ -53,12 +60,10 @@
         clearTimeout(timer);
     }
 
-    // 1. calc button click -> 2. quit the calc click twice -> 3. clear the timer third time
-    // result:
-    // calc start!
-    // ----------------- sum : 49999999990067860000
-    // calc end!
-    // set terminateFlag true!     (twice)
-    // clear timer!                (third time)
+    // second try
+  // To stop while calculating in timer callback function, use this way.
+  // split calculating range, and set and call setTimeout
+  // then you change the terminateFlag, setTimout cb use this changed variable.
+
 </script>
 </html>
