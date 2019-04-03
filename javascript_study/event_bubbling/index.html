@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+//https://joshua1988.github.io/web-development/javascript/event-propagation-delegation/ 예제 따라하기
+<body>
+<div class="one" style="width: 500px; height: 500px; background-color: yellow;">
+  <div class="two" style="width: 300px; height: 350px; background-color: red;">
+    <div class="three" style="width: 150px; height: 150px; background-color: black;">
+    </div>
+  </div>
+</div>
+
+<script>
+    var divs = document.querySelectorAll('div');
+    divs.forEach(function(div) {
+        div.addEventListener('click', logEvent, {capture: true});
+    });
+
+    function logEvent(event) {
+        //event.stopPropagation();
+        console.error(event.currentTarget.className);
+    }
+
+</script>
+</body>
+</html>
